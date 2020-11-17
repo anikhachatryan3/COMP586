@@ -1,0 +1,53 @@
+<template>
+  <div>
+    <h1>Login</h1>
+    <form>
+      <div>
+        <label>
+          email:
+        </label>
+        <input type="email" v-model="email">
+      </div>
+      <div>
+        <label>
+          password:
+        </label>
+        <input type="password" v-model="password">
+      </div>
+      <div>
+        <input type="button" value="Submit" @click="login()">
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'Login',
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    login() {
+      axios.post('http://localhost:8000/api/login', {
+        'email': this.email,
+        'password': this.password
+      })
+      .then(function(response) {
+        console.log(response.data);
+      })
+      .catch(function(error) {
+        console.log(error.response);
+      });
+    }
+  }
+}
+</script>
+
+<style scoped>
+</style>
