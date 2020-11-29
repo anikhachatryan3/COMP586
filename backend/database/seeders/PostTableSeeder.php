@@ -16,18 +16,18 @@ class PostTableSeeder extends Seeder
      */
     public function run()
     {
-        $userStudent = User::whereHas('roles', function($query) {
-            return $query->where('code', 'STUDENT');
-        })->firstOrFail();
-        Post::factory()->count(5)->create([
-            'user_id' => $userStudent->id
-        ]);
+    //     $userStudent = User::whereHas('roles', function($query) {
+    //         return $query->where('code', 'STUDENT');
+    //     })->firstOrFail();
+    //     Post::factory()->count(5)->create([
+    //         'user_id' => $userStudent->id
+    //     ]);
 
-        $userAdmin = User::whereHas('roles', function($query) {
-            return $query->where('code', 'ADMIN');
-        })->firstOrFail();
-        Post::factory()->count(5)->create([
-            'user_id' => $userAdmin->id
-        ]);
+    //     $userAdmin = User::whereHas('roles', function($query) {
+    //         return $query->where('code', 'ADMIN');
+    //     })->firstOrFail();
+    //     Post::factory()->count(5)->create([
+    //         'user_id' => $userAdmin->id
+    //     ]);
     }
 }

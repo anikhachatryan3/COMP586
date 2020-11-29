@@ -17,25 +17,25 @@ class CommentTableSeeder extends Seeder
      */
     public function run()
     {
-        $userStudent = User::whereHas('roles', function($query) {
-            return $query->where('code', 'STUDENT');
-        })->firstOrFail();
+        // $userStudent = User::whereHas('roles', function($query) {
+        //     return $query->where('code', 'STUDENT');
+        // })->firstOrFail();
         
-        $userAdmin = User::whereHas('roles', function($query) {
-            return $query->where('code', 'ADMIN');
-        })->firstOrFail();
+        // $userAdmin = User::whereHas('roles', function($query) {
+        //     return $query->where('code', 'ADMIN');
+        // })->firstOrFail();
 
-        $posts = Post::all();
+        // $posts = Post::all();
 
-        foreach($posts as $post) {
-            Comment::factory()->count(3)->create([
-                'post_id' => $post->id,
-                'user_id' => $userStudent->id
-            ]);
-            Comment::factory()->count(2)->create([
-                'post_id' => $post->id,
-                'user_id' => $userAdmin->id
-            ]);
-        }
+        // foreach($posts as $post) {
+        //     Comment::factory()->count(3)->create([
+        //         'post_id' => $post->id,
+        //         'user_id' => $userStudent->id
+        //     ]);
+        //     Comment::factory()->count(2)->create([
+        //         'post_id' => $post->id,
+        //         'user_id' => $userAdmin->id
+        //     ]);
+        // }
     }
 }
