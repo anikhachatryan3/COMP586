@@ -1,15 +1,11 @@
 <template>
-  <div>
-    <h1>Home</h1>
+  <div v-if="post">
+    <h1>{{ post.title }}</h1>
+    <h4><div>{{ post.user.username }}</div></h4>
     <hr class="post">
-    <div>
-      <div v-for="post in posts" :key="post.id" class="post">
-        <h2><router-link :to="'/posts/' + post.id" class="h2">{{ post.title }}</router-link></h2>
-        <h4><div>{{ post.user.username }}</div></h4>
+    <div class="post">
         <div>{{ post.body }}</div>
         <div class="date">{{ timeFormat(post.created_at) }}</div>
-        <hr>
-      </div>
     </div>
   </div>
 </template>
@@ -17,18 +13,19 @@
 <script>
 import axios from 'axios'
 export default {
-  name: 'Home',
+  name: 'Post',
   data() {
     return {
-      posts: []
+      post: null
     }
   },
   created() {
+    let post_id = this.$route.params.post;
     if(localStorage.getItem('token')) {
       let v = this;
-      axios.get('http://localhost:8000/api/posts')
+      axios.get('http://localhost:8000/api/posts/' + post_id)
       .then(function(response) {
-        v.posts = response.data;
+        v.post = response.data;
       })
       .catch(function(error) {
         console.log(error.response);

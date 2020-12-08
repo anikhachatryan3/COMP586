@@ -1,8 +1,10 @@
 <template>
   <div>
     <div v-if="token">{{ token }}</div>
+    <router-link :to="'/'" v-if="token">Home</router-link>
+    <router-link :to="'/posts'" v-if="token">My Posts</router-link>
     <router-link :to="'/login'" v-if="!token">Login</router-link>
-    <router-link :to="''" @click="logout()" v-if="token">Logout</router-link>
+    <button @click="logout()" v-if="token">Logout</button>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Home</h1>
+    <h1>My Posts</h1>
     <hr class="post">
     <div>
       <div v-for="post in posts" :key="post.id" class="post">
@@ -17,16 +17,17 @@
 <script>
 import axios from 'axios'
 export default {
-  name: 'Home',
+  name: 'Posts',
   data() {
     return {
       posts: []
     }
   },
   created() {
+      let user = localStorage.getItem('user_id');
     if(localStorage.getItem('token')) {
       let v = this;
-      axios.get('http://localhost:8000/api/posts')
+      axios.get('http://localhost:8000/api/' + user + '/posts')
       .then(function(response) {
         v.posts = response.data;
       })
