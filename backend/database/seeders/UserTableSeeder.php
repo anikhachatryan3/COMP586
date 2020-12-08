@@ -22,7 +22,12 @@ class UserTableSeeder extends Seeder
     }
 
     private function createStudentUser() {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'email' => 'ani@gmail.com',
+            'first_name' => 'Ani',
+            'last_name' => 'Khachatryan',
+            'username' => 'anikh',
+        ]);
         $role = Role::where('code', 'STUDENT')->firstOrFail();
         UserRole::factory()->create([
             'user_id' => $user->id,
@@ -31,7 +36,12 @@ class UserTableSeeder extends Seeder
     }
 
     private function createAdminUser() {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'email' => 'felixrabinovich@gmail.com',
+            'first_name' => 'Felix',
+            'last_name' => 'Rabinovich',
+            'username' => 'felix'
+        ]);
         $role = Role::where('code', 'ADMIN')->firstOrFail();
         UserRole::factory()->create([
             'user_id' => $user->id,
