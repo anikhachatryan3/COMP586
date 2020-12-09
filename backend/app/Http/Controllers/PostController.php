@@ -12,14 +12,41 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class PostController extends Controller
 {
     public function allPosts() {
-        return Post::all();
+        return response()->json([
+            'posts' => Post::all()
+        ], 200);
     }
 
     public function myPosts(User $user) {
-        return $user->posts;
+        return response()->json([
+            'posts' => $user->posts
+        ], 200);
     }
 
     public function post(Post $post) {
-        return $post;
+        return response()->json([
+            'post' => $post
+        ], 200);
+    }
+
+    public function create(Request $request) {
+        $request->validate([
+            'title' => 'required',
+            'body' => 'required',
+            'user_id' => 'required|exists:users,id'
+        ]);
+        $post = new Post();
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->user_id = $request->user_id;
+        if($post->save()) {
+            $post->refresh();
+            return response()->json([
+                'post' => $post
+            ], 200);
+        }
+        return response()->json([
+            'error' => 'unable to create post'
+        ], 406);
     }
 }

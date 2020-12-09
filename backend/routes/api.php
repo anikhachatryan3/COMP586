@@ -22,3 +22,4 @@ Route::post('/login', 'App\Http\Controllers\Auth\LoginController@login')->name('
 Route::get('/posts', 'App\Http\Controllers\PostController@allPosts')->name('posts');
 Route::get('{user}/posts', 'App\Http\Controllers\PostController@myPosts')->name('my-posts');
 Route::get('/posts/{post}', 'App\Http\Controllers\PostController@post')->name('post');
+Route::post('/create-post', 'App\Http\Controllers\PostController@create')->name('create-post');

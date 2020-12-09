@@ -1,6 +1,9 @@
 <template>
-  <div>
+  <div class="text-center">
     <h1>My Posts</h1>
+    <div>
+        <router-link :to="'/create-post'">Create Post</router-link>
+    </div>
     <hr class="post">
     <div>
       <div v-for="post in posts" :key="post.id" class="post">
@@ -29,7 +32,7 @@ export default {
       let v = this;
       axios.get('http://localhost:8000/api/' + user + '/posts')
       .then(function(response) {
-        v.posts = response.data;
+        v.posts = response.data.posts;
       })
       .catch(function(error) {
         console.log(error.response);

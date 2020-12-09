@@ -4,6 +4,7 @@ import Home from '@/pages/Home.vue'
 import Login from '@/pages/Login.vue';
 import Post from '@/pages/Post.vue';
 import Posts from '@/pages/Posts.vue';
+import CreatePost from '@/pages/CreatePost.vue';
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,11 @@ export default new VueRouter({
             path: '/posts/:post',
             name: 'Post',
             component: Post
+        },
+        {
+            path: '/create-post',
+            name: 'CreatePost',
+            component: CreatePost
         }
     ]
 });

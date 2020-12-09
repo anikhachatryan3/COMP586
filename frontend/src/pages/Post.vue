@@ -25,7 +25,7 @@ export default {
       let v = this;
       axios.get('http://localhost:8000/api/posts/' + post_id)
       .then(function(response) {
-        v.post = response.data;
+        v.post = response.data.post;
       })
       .catch(function(error) {
         console.log(error.response);
