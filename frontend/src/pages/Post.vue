@@ -2,22 +2,34 @@
   <div v-if="post">
     <h1>{{ post.title }}</h1>
     <h4><div>{{ post.user.username }}</div></h4>
-    <hr class="post">
     <div class="post">
         <div>{{ post.body }}</div>
         <div class="date">{{ timeFormat(post.created_at) }}</div>
     </div>
+    <!-- <hr class="post"> -->
+    <div>
+      <comments
+        :comments="post.comments"
+      ></comments>
+    </div>
+    <!-- <hr class="post"> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Comments from '../components/Comments.vue'
 export default {
   name: 'Post',
   data() {
-    return {
-      post: null
-    }
+    // Comments{
+      return {
+        post: null
+      }
+    // }
+  },
+  components: {
+    Comments
   },
   created() {
     let post_id = this.$route.params.post;

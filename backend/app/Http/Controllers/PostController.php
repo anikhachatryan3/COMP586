@@ -7,19 +7,19 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 // use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
+// use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PostController extends Controller
 {
     public function allPosts() {
         return response()->json([
-            'posts' => Post::all()
+            'posts' => Post::latest()->get()
         ], 200);
     }
 
     public function myPosts(User $user) {
         return response()->json([
-            'posts' => $user->posts
+            'posts' => $user->posts()->orderBy('created_at', 'desc')->get()
         ], 200);
     }
 
