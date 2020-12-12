@@ -1,12 +1,10 @@
 <template>
     <div>
-        <hr v-if="index+1!=size">
         <div>{{ username }}</div>
         <div>{{ text }}</div>
         <div class="date">{{ timeFormat(created_at) }}</div>
-        <button v-if="user_id == userId" @click="editComment()">Edit Comment</button>
         <button v-if="user_id == userId || userRole == 'ADMIN'" @click="deleteComment()">Delete Comment</button>
-        <!-- <hr v-if="index+1!=size"> -->
+        <hr v-if="index+1!=size">
     </div>
 </template>
 
@@ -70,9 +68,6 @@ export default {
             }
             let AmPm = date.getHours() > 11 ? 'pm' : 'am';
             return date.toDateString().substring(4) + ' at ' + hour + ':' + date.getMinutes() + AmPm;
-        },
-        editComment() {
-            
         },
         deleteComment() {
             let v = this;

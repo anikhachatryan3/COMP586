@@ -40,6 +40,10 @@ export default {
             })
             .then(function(response) {
                 console.log(response.data)
+                v.$router.push({
+                    name: 'Post',
+                    params: { post: response.data.post.id }
+                });
             })
             .catch(function() {
                 v.error = 'Error creating post!';

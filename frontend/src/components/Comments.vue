@@ -1,5 +1,6 @@
 <template>
     <div>
+        <hr class="post">
        <comment v-for="(comment, index) in comments"
         :key="index"
         :id="comment.id"
@@ -11,6 +12,7 @@
         :size="comments.length"
         @deletedComment="deletedComment"
        ></comment>
+        <hr class="post">
     </div>
 </template>
 
@@ -37,3 +39,11 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.post {
+    width: 72%;
+    text-align: center;
+    display: inline-block;
+}
+</style>

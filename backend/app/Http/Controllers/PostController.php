@@ -55,7 +55,7 @@ class PostController extends Controller
             'user_id' => 'required|exists:users,id'
         ]);
         $user = User::where('id', $request->user_id)->first();
-        if($user->role->code == 'ADMIN' || $user->id == $post->user_id) {
+        if($user->role == 'ADMIN' || $user->id == $post->user_id) {
             if($post->delete()) {
                 return response()->json([
                     'message' => 'Successfully deleted post!'

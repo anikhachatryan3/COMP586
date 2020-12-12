@@ -5,13 +5,19 @@
     <div class="post">
         <div>{{ post.body }}</div>
         <div class="date">{{ timeFormat(post.created_at) }}</div>
+        <button v-if="post.user_id == userId || userRole == 'ADMIN'" @click="deletePost()">Delete Post</button>
     </div>
     <!-- <hr class="post"> -->
     <div>
-      <comments
+      <comments v-if="post.comments.length"
         :comments="post.comments"
         @deletedComment="deletedComment"
       ></comments>
+      <div v-else>
+        <hr class="post">
+        <div>No Comments</div>
+        <br>
+      </div>
     </div>
     <!-- <hr class="post"> -->
     <create-comment :post_id="post.id" @comment="newComment"></create-comment>
@@ -49,6 +55,14 @@ export default {
       });
     }
   },
+  computed: {
+    userId() {
+      return localStorage.getItem('user_id');
+    },
+    userRole() {
+      return localStorage.getItem('role');
+    }
+  },
   methods: {
     timeFormat(dateTime) {
       let date = new Date(dateTime);
@@ -79,7 +93,7 @@ export default {
     },
     deletePost() {
       let v = this;
-      axios.delete('http://localhost:8000/api/posts/' + this.id, {
+      axios.delete('http://localhost:8000/api/posts/' + this.post.id, {
         "data": {
           'user_id': localStorage.getItem('user_id')
         }
