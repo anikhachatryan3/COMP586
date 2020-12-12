@@ -10,15 +10,19 @@
     <div>
       <comments
         :comments="post.comments"
+        @deletedComment="deletedComment"
       ></comments>
     </div>
     <!-- <hr class="post"> -->
+    <create-comment :post_id="post.id" @comment="newComment"></create-comment>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import Comments from '../components/Comments.vue'
+import CreateComment from '../components/CreateComment.vue'
+
 export default {
   name: 'Post',
   data() {
@@ -29,7 +33,8 @@ export default {
     // }
   },
   components: {
-    Comments
+    Comments,
+    CreateComment
   },
   created() {
     let post_id = this.$route.params.post;
@@ -61,6 +66,33 @@ export default {
       }
       let AmPm = date.getHours() > 11 ? 'pm' : 'am';
       return date.toDateString().substring(4) + ' at ' + hour + ':' + date.getMinutes() + AmPm;
+    },
+    newComment(value) {
+      this.post.comments.push(value);
+    },
+    deletedComment(value) {
+      console.log('value: ' + value)
+      let index = this.post.comments.findIndex(comment => comment.id == value);
+      if(index > -1) {
+        this.post.comments.splice(index, 1);
+      }
+    },
+    deletePost() {
+      let v = this;
+      axios.delete('http://localhost:8000/api/posts/' + this.id, {
+        "data": {
+          'user_id': localStorage.getItem('user_id')
+        }
+      })
+      .then(function() {
+        localStorage.setItem('notification', 'Post was successfully deleted!');
+        v.$router.push({
+          name: 'Posts',
+        });
+      })
+      .catch(function() {
+        console.log('Error deleting post.');
+      });
     }
   }
 }

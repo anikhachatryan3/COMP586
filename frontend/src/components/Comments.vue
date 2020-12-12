@@ -5,9 +5,11 @@
         :id="comment.id"
         :text="comment.text"
         :username="comment.user.username"
+        :user_id="comment.user_id"
         :created_at="comment.created_at"
         :index="index"
-        :size="comments.size"
+        :size="comments.length"
+        @deletedComment="deletedComment"
        ></comment>
     </div>
 </template>
@@ -27,6 +29,11 @@ export default {
     },
     components: {
         Comment
+    },
+    methods: {
+        deletedComment(value) {
+            this.$emit('deletedComment', value);
+        }
     }
 }
 </script>

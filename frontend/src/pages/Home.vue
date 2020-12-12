@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="notification.length">{{ notification }}</div>
     <h1>Home</h1>
     <div>
         <router-link :to="'/create-post'">Create Post</router-link>
@@ -23,7 +24,8 @@ export default {
   name: 'Home',
   data() {
     return {
-      posts: []
+      posts: [],
+      notification: '',
     }
   },
   created() {
@@ -36,6 +38,11 @@ export default {
       .catch(function(error) {
         console.log(error.response);
       });
+    }
+
+    if(localStorage.getItem('notification')) {
+      this.notification = localStorage.getItem('notification')
+      localStorage.removeItem('notification')
     }
   },
   methods: {

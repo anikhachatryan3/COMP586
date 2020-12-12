@@ -23,3 +23,8 @@ Route::get('/posts', 'App\Http\Controllers\PostController@allPosts')->name('post
 Route::get('{user}/posts', 'App\Http\Controllers\PostController@myPosts')->name('my-posts');
 Route::get('/posts/{post}', 'App\Http\Controllers\PostController@post')->name('post');
 Route::post('/create-post', 'App\Http\Controllers\PostController@create')->name('create-post');
+Route::delete('/posts/{post}', 'App\Http\Controllers\PostController@deletePost')->name('delete-post');
+Route::put('/posts/{post}', 'App\Http\Controllers\PostController@editPost')->name('edit-post');
+Route::post('/posts/{post}/comment', 'App\Http\Controllers\CommentController@create')->name('create-comment');
+Route::delete('/comments/{comment}', 'App\Http\Controllers\CommentController@deleteComment')->name('delete-comment');
+Route::put('/comments/{comment}', 'App\Http\Controllers\CommentController@editComment')->name('edit-comment');

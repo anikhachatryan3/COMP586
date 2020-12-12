@@ -4,11 +4,15 @@
         <div>{{ username }}</div>
         <div>{{ text }}</div>
         <div class="date">{{ timeFormat(created_at) }}</div>
+        <button v-if="user_id == userId" @click="editComment()">Edit Comment</button>
+        <button v-if="user_id == userId || userRole == 'ADMIN'" @click="deleteComment()">Delete Comment</button>
         <!-- <hr v-if="index+1!=size"> -->
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'Comment',
     props: {
@@ -18,6 +22,10 @@ export default {
         },
         text: {
             type: String,
+            default: null
+        },
+        user_id: {
+            type: Number,
             default: null
         },
         username: {
@@ -37,6 +45,14 @@ export default {
             default: null
         }
     },
+    computed: {
+        userId() {
+            return localStorage.getItem('user_id');
+        },
+        userRole() {
+            return localStorage.getItem('role');
+        }
+    },
     methods: {
         timeFormat(dateTime) {
             let date = new Date(dateTime);
@@ -54,6 +70,24 @@ export default {
             }
             let AmPm = date.getHours() > 11 ? 'pm' : 'am';
             return date.toDateString().substring(4) + ' at ' + hour + ':' + date.getMinutes() + AmPm;
+        },
+        editComment() {
+            
+        },
+        deleteComment() {
+            let v = this;
+            axios.delete('http://localhost:8000/api/comments/' + this.id, {
+                "data": {
+                    'user_id': localStorage.getItem('user_id')
+                }
+            })
+            .then(function() {
+                v.$emit('deletedComment', v.id)
+            })
+            .catch(function() {
+                console.log('Error deleting comment.');
+            });
+            
         }
     }
 }

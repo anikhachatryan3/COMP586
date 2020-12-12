@@ -34,6 +34,7 @@ export default {
   },
   methods: {
     login() {
+      let v = this;
       axios.post('http://localhost:8000/api/login', {
         'email': this.email,
         'password': this.password
@@ -44,8 +45,12 @@ export default {
         localStorage.setItem('last_name', response.data.user.last_name);
         localStorage.setItem('email', response.data.user.email);
         localStorage.setItem('username', response.data.user.username);
+        localStorage.setItem('role', response.data.user.role);
         localStorage.setItem('token', response.data.token);
-        window.location.href = '/'
+        // window.location.href = '/'
+        v.$router.push({
+          name: 'Home',
+        });
       })
       .catch(function(error) {
         console.log(error.response);

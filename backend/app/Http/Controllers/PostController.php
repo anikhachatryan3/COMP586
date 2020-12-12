@@ -46,7 +46,51 @@ class PostController extends Controller
             ], 200);
         }
         return response()->json([
-            'error' => 'unable to create post'
+            'error' => 'Unable to create post!'
         ], 406);
+    }
+
+    public function deletePost(Post $post, Request $request) {
+        $request->validate([
+            'user_id' => 'required|exists:users,id'
+        ]);
+        $user = User::where('id', $request->user_id)->first();
+        if($user->role->code == 'ADMIN' || $user->id == $post->user_id) {
+            if($post->delete()) {
+                return response()->json([
+                    'message' => 'Successfully deleted post!'
+                ], 200);
+            }
+            return response()->json([
+                'error' => 'Could not delete post!'
+            ]);
+        }
+        return response()->json([
+            'error' => 'You do not have permission to delete this post.'
+        ]);
+    }
+
+    public function editPost(Post $post, Request $request) {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+        $user = User::where('id', $request->user_id)->first();
+        if($user->id == $post->user_id) {
+            $post->title = $request->title;
+            $post->body = $request->body;
+            if($post->save()) {
+                return response()->json([
+                    'message' => 'Successfully updated post!'
+                ]);
+            }
+            return response()->json([
+                'error' => 'Could not edit post.'
+            ]);
+        }
+        return response()->json([
+            'error' => 'You do not have permission to edit this post.'
+        ]);
     }
 }
