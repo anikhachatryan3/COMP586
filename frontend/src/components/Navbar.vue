@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div v-if="token">{{ token }}</div>
     <router-link :to="'/'" v-if="token">Home</router-link>
     <router-link :to="'/posts'" v-if="token">My Posts</router-link>
     <router-link :to="'/login'" v-if="!token">Login</router-link>
@@ -13,12 +12,13 @@ export default {
   name: 'Navbar',
   computed: {
     token() {
-      return localStorage.getItem('token');
+      return this.$session.get('token');
     }
   },
   methods: {
     logout() {
-      localStorage.clear();
+      this.$session.clear();
+      this.$router.go();
     }
   }
 }

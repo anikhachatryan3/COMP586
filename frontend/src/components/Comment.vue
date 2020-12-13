@@ -45,10 +45,10 @@ export default {
     },
     computed: {
         userId() {
-            return localStorage.getItem('user_id');
+            return this.$session.get('user_id');
         },
         userRole() {
-            return localStorage.getItem('role');
+            return this.$session.get('role');
         }
     },
     methods: {
@@ -73,14 +73,14 @@ export default {
             let v = this;
             axios.delete('http://localhost:8000/api/comments/' + this.id, {
                 "data": {
-                    'user_id': localStorage.getItem('user_id')
+                    'user_id': this.$session.get('user_id')
                 }
             })
             .then(function() {
                 v.$emit('deletedComment', v.id)
             })
             .catch(function() {
-                console.log('Error deleting comment.');
+                alert('Error deleting comment.');
             });
             
         }

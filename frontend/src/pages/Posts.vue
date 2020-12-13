@@ -32,8 +32,9 @@ export default {
     }
   },
   async created() {
-    let user = localStorage.getItem('user_id');
-    if(localStorage.getItem('token')) {
+    this.loggedIn();
+    let user = this.$session.get('user_id');
+    if(this.$session.get('token')) {
       this.loading = true;
       let v = this;
       await axios.get('http://localhost:8000/api/' + user + '/posts')
@@ -41,23 +42,23 @@ export default {
         v.posts = response.data.posts;
         v.loading = false;
       })
-      .catch(function(error) {
-        console.log(error.response);
+      .catch(function() {
         v.loading = false;
+        alert('Error fetching posts.');
       });
     }
 
-    if(localStorage.getItem('notification')) {
-      this.notification = localStorage.getItem('notification')
-      localStorage.removeItem('notification')
+    if(this.$session.get('notification')) {
+      this.notification = this.$session.get('notification')
+      this.$session.remove('notification')
     }
   },
   computed: {
     userId() {
-      return localStorage.getItem('user_id');
+      return this.$session.get('user_id');
     },
     userRole() {
-      return localStorage.getItem('role');
+      return this.$session.get('role');
     }
   },
   methods: {
@@ -93,8 +94,15 @@ export default {
         }
       })
       .catch(function() {
-        console.log('Error deleting post.');
+        alert('Error deleting post.');
       });
+    },
+    loggedIn() {
+      if(!this.$session.get('token')) {
+        this.$router.push({
+          name: 'Login'
+        });
+      }
     }
   }
 }

@@ -30,16 +30,18 @@ export default {
             error: ''
         }
     },
+    created() {
+        this.loggedIn();
+    },
     methods: {
         create() {
             let v = this;
             axios.post('http://localhost:8000/api/create-post', {
                 'title': this.title,
                 'body': this.body,
-                'user_id': localStorage.getItem('user_id')
+                'user_id': this.$session.get('user_id')
             })
             .then(function(response) {
-                console.log(response.data)
                 v.$router.push({
                     name: 'Post',
                     params: { post: response.data.post.id }
@@ -48,6 +50,13 @@ export default {
             .catch(function() {
                 v.error = 'Error creating post!';
             });
+        },
+        loggedIn() {
+            if(!this.$session.get('token')) {
+                this.$router.push({
+                    name: 'Login'
+                });
+            }
         }
     }
 }

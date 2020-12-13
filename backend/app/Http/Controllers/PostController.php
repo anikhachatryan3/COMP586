@@ -12,18 +12,36 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     public function allPosts() {
+        $posts = Post::latest()->get();
+        for($i = 0; $i < $posts->count(); $i++) {
+            $posts[$i]->user;
+        }
         return response()->json([
-            'posts' => Post::latest()->get()
+            'posts' => $posts
         ], 200);
     }
 
     public function myPosts(User $user) {
+        $posts = $user->posts()->orderBy('created_at', 'desc')->get();
+        for($i = 0; $i < $posts->count(); $i++) {
+            $posts[$i]->user;
+            $posts[$i]->comments;
+            for($j = 0; $j < $posts[$i]->comments->count(); $j++) {
+                $posts[$i]->comments[$i]->user;
+            }
+        }
         return response()->json([
-            'posts' => $user->posts()->orderBy('created_at', 'desc')->get()
+            'posts' => $posts
         ], 200);
     }
 
     public function post(Post $post) {
+        $post->comments;
+        $post->user;
+        $post->username;
+        for($i = 0; $i < $post->comments->count(); $i++) {
+            $post->comments[$i]->user;
+        }
         return response()->json([
             'post' => $post
         ], 200);
@@ -40,6 +58,11 @@ class PostController extends Controller
         $post->body = $request->body;
         $post->user_id = $request->user_id;
         if($post->save()) {
+            $post->user;
+            $post->comments;
+            for($i = 0; $i < $post->comments->count(); $i++) {
+                $post->comments[$i]->user;
+            }
             $post->refresh();
             return response()->json([
                 'post' => $post
@@ -67,30 +90,6 @@ class PostController extends Controller
         }
         return response()->json([
             'error' => 'You do not have permission to delete this post.'
-        ]);
-    }
-
-    public function editPost(Post $post, Request $request) {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'title' => 'required',
-            'body' => 'required'
-        ]);
-        $user = User::where('id', $request->user_id)->first();
-        if($user->id == $post->user_id) {
-            $post->title = $request->title;
-            $post->body = $request->body;
-            if($post->save()) {
-                return response()->json([
-                    'message' => 'Successfully updated post!'
-                ]);
-            }
-            return response()->json([
-                'error' => 'Could not edit post.'
-            ]);
-        }
-        return response()->json([
-            'error' => 'You do not have permission to edit this post.'
         ]);
     }
 }

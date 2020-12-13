@@ -36,7 +36,7 @@ export default {
                 let v = this;
                 axios.post('http://localhost:8000/api/posts/' + this.post_id + '/comment', {
                     'text': this.comment_box,
-                    'user_id': localStorage.getItem('user_id')
+                    'user_id': this.$session.get('user_id')
                 })
                 .then(function(response) {
                     v.$emit('comment', response.data.comment)

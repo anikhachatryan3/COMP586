@@ -32,7 +32,8 @@ export default {
     }
   },
   async created() {
-    if(localStorage.getItem('token')) {
+    this.loggedIn();
+    if(this.$session.get('token')) {
       this.loading = true;
       let v = this;
       await axios.get('http://localhost:8000/api/posts')
@@ -40,23 +41,23 @@ export default {
         v.posts = response.data.posts;
         v.loading = false;
       })
-      .catch(function(error) {
-        console.log(error.response);
+      .catch(function() {
         v.loading = false;
+        alert('Error fetching posts.');
       });
     }
 
-    if(localStorage.getItem('notification')) {
-      this.notification = localStorage.getItem('notification')
-      localStorage.removeItem('notification')
+    if(this.$session.get('notification')) {
+      this.notification = this.$session.get('notification')
+      this.$session.remove('notification')
     }
   },
   computed: {
     userId() {
-      return localStorage.getItem('user_id');
+      return this.$session.get('user_id');
     },
     userRole() {
-      return localStorage.getItem('role');
+      return this.$session.get('role');
     }
   },
   methods: {
@@ -81,19 +82,26 @@ export default {
       let v = this;
       axios.delete('http://localhost:8000/api/posts/' + postId, {
         "data": {
-          'user_id': localStorage.getItem('user_id')
+          'user_id': this.$session.get('user_id')
         }
       })
       .then(function() {
-        localStorage.setItem('notification', 'Post was successfully deleted!');
+        this.session.set('notification', 'Post was successfully deleted!');
         let index = v.posts.findIndex(post => post.id == postId);
         if(index > -1) {
           v.posts.splice(index, 1);
         }
       })
       .catch(function() {
-        console.log('Error deleting post.');
+        alert('Error deleting post.');
       });
+    },
+    loggedIn() {
+      if(!this.$session.get('token')) {
+        this.$router.push({
+          name: 'Login'
+        });
+      }
     }
   }
 }

@@ -12,7 +12,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $with = ['user', 'comments'];
+    // protected $with = ['user', 'comments'];
 
     public function user() {
         return $this->belongsTo(User::class);
