@@ -19,3 +19,15 @@
 
 
 #### App: https://mighty-taiga-05748.herokuapp.com/#/login
+
+### To run the project:
+#### Frontend:
+#### npm install
+#### npm run serve
+
+#### Backend:
+#### (Enter database credentials in .env file)
+#### composer install
+#### php artisan key:generate
+#### php artisan migrate:fresh --seed
+#### php artisan serve
