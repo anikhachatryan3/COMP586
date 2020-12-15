@@ -27,7 +27,7 @@ class PostController extends Controller
             $posts[$i]->user;
             $posts[$i]->comments;
             for($j = 0; $j < $posts[$i]->comments->count(); $j++) {
-                $posts[$i]->comments[$i]->user;
+                $posts[$i]->comments[$j]->user;
             }
         }
         return response()->json([
